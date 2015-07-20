@@ -26,7 +26,7 @@
 define('NO_UPGRADE_CHECK', true);
 
 require_once('../../../config.php');
-require_once($CFG->dirroot.'/admin/tool/monitoring/classes/tool_monitoring.php');
+require_once($CFG->dirroot.'/admin/tool/monitoring/classes/checker.php');
 
 // Defaults.
 $remotepassword = MONITORINGPASS;
@@ -51,8 +51,8 @@ if (isset($config->jsonenabled) and empty($config->jsonenabled)) {
     $json = false;
 }
 
-$monitoring = new tool_monitoring();
-$results = $monitoring->do_checks();
+$checker = new tool_monitoring_checker();
+$results = $checker->do_checks();
 
 if ($json) {
     echo json_encode($results);
@@ -64,5 +64,3 @@ if ($json) {
         }
     }
 }
-
-

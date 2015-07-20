@@ -27,7 +27,7 @@ require_once($CFG->dirroot.'/admin/tool/monitoring/lib.php');
 
 defined('MOODLE_INTERNAL') || die;
 
-class tool_monitoring {
+class tool_monitoring_checker {
 
     private $checks;
     private $params;
@@ -187,7 +187,7 @@ class tool_monitoring {
                 $delete = $DB->delete_records($table, array('id' => $select->id));
             }
 
-            // Try to create and delete temp table
+            // Try to create and delete temp table.
             $temptables = true;
             $dbman = $DB->get_manager();
             $temptable = new xmldb_table('monitoring_temp_table');
@@ -271,18 +271,6 @@ class tool_monitoring {
             $errors .= "Can't write file $testfile. Sitedata is not writable.";
         }
 
-        $sessionhandler = (property_exists($CFG, 'session_handler_class') && $CFG->session_handler_class == '\core\session\memcached');
-        if ($sessionhandler) {
-            $memcache = explode(':', $CFG->session_memcached_save_path );
-            try {
-                memcache_connect($memcache[0], $memcache[1], 3);
-                $errors .= "session memcache OK<br>\n";
-            } catch (Exception $e) {
-                $result = false;                
-                $errors .= 'sessions memcache';
-            }
-        }        
-        
         return  array('result' => $result, 'info' => $errors);
     }
 }
